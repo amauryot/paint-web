@@ -5,13 +5,19 @@ var app_height = 400;
 var app = document.querySelector('canvas');
 var brush = app.getContext('2d');
 
-var palette_x = 0;
-var palette_y = 0;
-var palette_size = 50;
+var palette_x = app_x;
+var palette_y = app_y;
+var palette_width = app_width;
+var palette_height = 50;
+var palette_square_size = palette_height;
 var palette_colors = ['red', 'green', 'blue'];
 
-drawPalette();
-drawCanvas();
+var canvas_x = app_x;
+var canvas_y = palette_height;
+var canvas_width = app_width;
+var canvas_height = app_height - palette_height;
+
+showApp();
 
 function drawSquare(x, y, size, color) {
   brush.fillStyle = color;
@@ -23,13 +29,18 @@ function drawFrame(x, y, width, height) {
   brush.strokeRect(x, y, width, height);
 }
 
-function drawPalette() {
+function showPalette() {
   for (i = 0; i < palette_colors.length; i++) {
-    drawSquare((palette_size * i), app_y, palette_size, palette_colors[i]);
+    drawSquare((palette_square_size * i), palette_y, palette_square_size, palette_colors[i]);
   }
-  drawFrame(app_x, app_y, app_width, palette_size);
+  drawFrame(palette_x, palette_y, palette_width, palette_height);
 }
 
-function drawCanvas() {
-  drawFrame(app_x, palette_size, app_width, app_height - palette_size);
+function showCanvas() {
+  drawFrame(canvas_x, canvas_y, canvas_width, canvas_height);
+}
+
+function showApp() {
+  showPalette();
+  showCanvas();
 }
