@@ -8,3 +8,8 @@ var canvas_height = app_height - palette_height;
 function drawCanvas() {
   drawFrame(canvas_x, canvas_y, canvas_width, canvas_height);
 }
+
+// Check if the mouse is on the canvas area.
+function onCanvasArea(y) {
+  return (y > palette_height);
+}

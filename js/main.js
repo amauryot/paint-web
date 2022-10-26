@@ -1,15 +1,5 @@
-
-// var brush_size = 10;
-// var enable_paint = false;
-
-// /* Main */
-
-runApp();
-
-// app.onmousemove = paint;
-// app.onmousedown = startPaint;
-// app.onmouseup = stopPaint;
-app.onclick = selectColor;
+// 
+var enable_paint = false;
 
 // Draw a square.
 function drawSquare(x, y, size, color) {
@@ -31,30 +21,50 @@ function drawFrame(x, y, width, height) {
   brush.strokeRect(x, y, width, height);
 }
 
+// Enable the paint.
+function startPaint() {
+  enable_paint = true;
+}
+
+// Disable the paint.
+function stopPaint() {
+  enable_paint = false;
+}
+
+// Start the paint.
+function paint(event) {
+  var x = event.pageX - app.offsetLeft;
+  var y = event.pageY - app.offsetTop;
+
+  if (!enable_paint || !onCanvasArea(y)) return;
+
+  if (brush_selected_type == 'circle') {
+    drawCircle(x, y, brush_selected_size, palette_selected_color);
+  }
+
+  if (brush_selected_type == 'square') {
+    drawSquare(x, y, brush_selected_size, palette_selected_color);
+  }
+}
+
+// Select the color and the brush type.
+function selectOptions(event) {
+  selectBrush(event);
+  selectColor(event);
+}
+
 // Run the app.
 function runApp() {
   drawPaletteBar();
-  drawBrushesBar();
+  drawBrushBar();
   drawCanvas();
 }
 
-// function startPaint() {
-//   enable_paint = true;
-// }
+// App events.
+app.onmousedown = startPaint;
+app.onmouseup = stopPaint;
+app.onmousemove = paint;
+app.onclick = selectOptions;
 
-// function stopPaint() {
-//   enable_paint = false;
-// }
-
-// function onCanvasArea(y) {
-//   return (y > palette_height);
-// }
-
-// function paint(event) {
-//   var x = event.pageX - app.offsetLeft;
-//   var y = event.pageY - app.offsetTop;
-
-//   if (enable_paint && onCanvasArea(y)) {
-//     drawCircle(x, y, brush_size, palette_selected_color);
-//   }
-// }
+// Run the app.
+runApp();

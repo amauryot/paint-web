@@ -18,9 +18,9 @@ function drawPaletteBar() {
   drawFrame(palette_x, palette_y, palette_width, palette_height);
 }
 
-// Check if the mouse is in the palette bar area.
-function onPaletteArea(y) {
-  return (y < palette_height);
+// Check if the mouse is on the palette bar area.
+function onPaletteArea(x, y) {
+  return (x > palette_x) && (x < palette_width) && (y < palette_height);
 }
 
 // Select the color.
@@ -28,12 +28,17 @@ function selectColor(event) {
   var x = event.pageX - app.offsetLeft;
   var y = event.pageY - app.offsetTop;
 
+  if (!onPaletteArea(x, y)) return;
+
   for (i = 0; i < palette_colors.length; i++) {
     var color_position = (x > i * palette_square_size) && (x < (i + 1) * palette_square_size);
 
-    if (color_position && onPaletteArea(y)) {
-      palette_selected_color = palette_colors[i];
-      break;
-    }
+    if (!color_position) continue;
+
+    palette_selected_color = palette_colors[i];
+
+    drawBrushBar(); // update the colors in the brushes.
+
+    break;
   }
 }
